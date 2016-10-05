@@ -1,6 +1,6 @@
 var r;
 $(function() {
-  $("#textarea2 textarea").each(function(){
+  $("#input_sentence").each(function(){
     $(this).bind('keyup', hoge(this));
   });
 });
@@ -26,7 +26,7 @@ function hoge(elm){
     if(old != (v=elm.value)){
       old = v;
       str = $(this).val();
-      // $("#textarea2 div").text(str);
+      // $("#textarea div").text(str);
       $.ajax({
         type: "GET",
         url: "/api/tokenize",
@@ -38,63 +38,62 @@ function hoge(elm){
         scriptCharset: 'utf-8',
 
         success: function(result){
-          //console.log("success");
-          console.log(result);
-          $("#textarea2 div").html("");
+          // テキストエリアを初期化
+          $("#textarea div").html("");
           text = "";
 
-          i = 0;
-          result.forEach(
-            function(morpheme){
-              surface = morpheme[0];
-              unidic_id = morpheme[1];
-              morph_type = morpheme[2];
-              btn_type = "btn-default";
-              if (morph_type == "easy"){
-                btn_type = "btn-primary";
-              }
-              id_morph = "morph_" + i;
-              morph = $(
-                '<button type="button" class="btn ' + btn_type + '" unidic_id="' + unidic_id + '" morph_type="' + morph_type + '" id="' + id_morph + '">' + morpheme[0] +'</button>'
-              ).appendTo("#textarea2 div");
+          for(var index in result){
+            // 要素の獲得
+            morpheme = result[index]
+            surface = morpheme[0];
+            unidic_id = morpheme[1];
+            morph_type = morpheme[2];
 
-              id_morph = "#" + id_morph;
-              morph = $(id_morph);
-              morph.click(function(){
-                $.ajax({
-                  type: "POST",
-                  url: "/api/check_easy",
-                  data:  JSON.stringify({
-                    "unidic_id": morph.attr("unidic_id"),
-                    "surface": morph.val()
-                  }),
-                  contentType: 'application/JSON',
-                  dataType : 'JSON',
-                  scriptCharset: 'utf-8',
-                  success: function(res){
-                    console.log(id_morph);
-                    console.log(res);
-                    $(id_morph).removeClass("btn-default");
-                    $(id_morph).removeClass("btn-primary");
-                    if (res == "none"){
-                      $(morph).addClass("btn-default");
-                    } else{
-                      $(id_morph).addClass("btn-primary");
-                    }
-                  },
-                  error: function(xhr, status, err) {
-                    console.log("error");
-                    console.log(status);
-                    console.log(err);
+            // ボタンのタイプ
+            btn_type = "btn-default";
+            if (morph_type == "easy"){
+              btn_type = "btn-primary";
+            }
+            // ボタンのID
+            id_morph = "morph_" + index;
+            // ボタン生成
+            morph = $(
+              '<button type="button" class="btn ' + btn_type + '" unidic_id="' + unidic_id + '" morph_type="' + morph_type + '" id="' + id_morph + '">' + morpheme[0] +'</button>'
+            ).appendTo("#textarea div");
+            id_morph = "#" + id_morph;
+            // ボタンに機能を付ける
+
+            $(id_morph).click(function(){
+              im = this;
+              $.ajax({
+                type: "POST",
+                url: "/api/check_easy",
+                data:  JSON.stringify({
+                  "unidic_id": $(im).attr("unidic_id"),
+                  "surface": $(im).text()
+                }),
+                contentType: 'application/JSON',
+                dataType : 'JSON',
+                scriptCharset: 'utf-8',
+
+                success: function(res){
+                  $(im).removeClass("btn-default");
+                  $(im).removeClass("btn-primary");
+                  if (res == "none"){
+                    $(im).addClass("btn-default");
+                  } else{
+                    $(im).addClass("btn-primary");
                   }
-                });
+                },
+
+                error: function(xhr, status, err) {
+                  console.log("error");
+                  console.log(status);
+                  console.log(err);
+                }
               });
-              // btn-primary:やさしい日本語
-              // btn-Danger:
-              // btn-default:
-            i += 1;
-          });
-          // $("#textarea2 div").text(result);
+            });
+          }
         },
 
         error: function(xhr, status, err) {
