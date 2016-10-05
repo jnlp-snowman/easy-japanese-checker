@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import MeCab
-
+from orm import *
 TAGGER_DIR = "/Users/takahashi/work/mecab_systemdic"
 
 class EasyJapanese(object):
@@ -15,8 +15,31 @@ class EasyJapanese(object):
         """
         morphemes = self.tagger.parse2morphemes(sentence)
         # ToDo:辞書型に変更。javascriptから扱いやすくなる。
-        return [(morph.surface, morph.unidic_id) for morph in morphemes]
+        return [(morph.surface, morph.unidic_id, self.get_morph_type(morph.unidic_id)) for morph in morphemes]
 
+    def get_morph_type(self, unidic_id):
+        row = db_session.query(EasyUniDic).filter(EasyUniDic.unidic_id == unidic_id).one_or_none()
+
+        if row is None:
+            return "none"
+        else:
+            return "easy"
+
+    def change_easy(self, unidic_id, surface):
+        morph = EasyUniDic()
+        morph.unidic_id = unidic_id
+        morph.surface = surface
+
+        row = db_session.query(EasyUniDic).filter(EasyUniDic.unidic_id == unidic_id).one_or_none()
+
+        if row is None:
+            db_session.merge(morph)
+            db_session.commit()
+            return "easy"
+        else:
+            db_session.delete(row)
+            db_session.commit()
+            return "none"
 
 class MecabTagger(object):
     def __init__(self, tagger_dir=""):

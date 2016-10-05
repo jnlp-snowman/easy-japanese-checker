@@ -6,7 +6,7 @@ from bottle import route, template, post, get, request, HTTPResponse
 import your_tool
 from easy_japanese import EasyJapanese, MecabTagger
 
-TAGGER_DIR = "-d /Users/takahashi/work/mecab_systemdic"
+TAGGER_DIR = "-d /tools/snowman/dic/mecab_systemdic"
 easy_japanese = EasyJapanese(TAGGER_DIR)
 
 @route('/')
@@ -41,6 +41,20 @@ def tokenize():
     result = easy_japanese.parse2web_register(text)
 
     body = json.dumps(result)
+    r = HTTPResponse(status=200, body=body)
+    r.set_header('Content-Type', 'application/json')
+    return r
+
+@post('/api/check_easy')
+def check_easy():
+    """
+    """
+    unidic_id = request.json['unidic_id']
+    surface = request.json['surface']
+
+    morph_type = easy_japanese.change_easy(unidic_id, surface)
+
+    body = json.dumps(morph_type)
     r = HTTPResponse(status=200, body=body)
     r.set_header('Content-Type', 'application/json')
     return r
