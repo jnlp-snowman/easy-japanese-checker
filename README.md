@@ -27,5 +27,12 @@ apacheで動かすときに、Proxyを使って転送しています。
 - /words
  - 登録した語の確認
 
+## さくらサーバーでのコンフィグファイルの例
+```ini
+[settings]
+mecab_systemdic = /snowmans/c_snowman/resources/mecab_systemdic/
+mysql = mysql+pymysql://gakkai:gakkai@localhost/web_data?charset=utf8
+```
+
 # License
 MIT License, see LICENSE for details.
