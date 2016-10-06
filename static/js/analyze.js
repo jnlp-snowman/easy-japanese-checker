@@ -1,25 +1,10 @@
-var r;
+// リアルタイムキー入力を獲得
 $(function() {
   $("#input_sentence").each(function(){
     $(this).bind('keyup', hoge(this));
   });
 });
-
-function writeTable(result)
-{
-  $("#tbl-result tbody").html("");
-  result.forEach(
-    function(elem){
-      $(
-        "<tr>" +
-        "<td>" + elem[0] + "</td>" +
-        "<td>" + elem[1] + "</td>" +
-        "</tr>"
-      ).appendTo("#tbl-result tbody");
-    }
-  );
-}
-
+// リアルタイムキー入力に発火する関数
 function hoge(elm){
   var v, old = elm.value;
   return function(){
@@ -29,7 +14,7 @@ function hoge(elm){
       // $("#textarea div").text(str);
       $.ajax({
         type: "GET",
-        url: "/api/tokenize",
+        url: "api/tokenize",
         data: {
           "input_text": str
         },
@@ -67,7 +52,7 @@ function hoge(elm){
               im = this;
               $.ajax({
                 type: "POST",
-                url: "/api/check_easy",
+                url: "api/check_easy",
                 data:  JSON.stringify({
                   "unidic_id": $(im).attr("unidic_id"),
                   "surface": $(im).text()
@@ -103,5 +88,3 @@ function hoge(elm){
     }
   }
 }
-
-// attr("morph_type")

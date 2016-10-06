@@ -2,9 +2,11 @@
 
 import MeCab
 from orm import *
-TAGGER_DIR = "/Users/takahashi/work/mecab_systemdic"
+
 
 class EasyJapanese(object):
+    """
+    """
     def __init__(self, tagger_dir=""):
         self.tagger = MecabTagger(tagger_dir)
 
@@ -43,6 +45,8 @@ class EasyJapanese(object):
 
 class MecabTagger(object):
     def __init__(self, tagger_dir=""):
+        if tagger_dir != "":
+            tagger_dir = "-d " + tagger_dir
         self.tagger = MeCab.Tagger(tagger_dir)
         self.tagger.parse("おまじない")
 
