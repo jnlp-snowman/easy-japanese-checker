@@ -45,40 +45,6 @@ function hoge(elm){
             morph = $(
               '<button type="button" class="btn ' + btn_type + '" unidic_id="' + unidic_id + '" morph_type="' + morph_type + '" id="' + id_morph + '">' + morpheme[0] +'</button>'
             ).appendTo("#textarea div");
-            id_morph = "#" + id_morph;
-            // ボタンに機能を付ける
-
-            $(id_morph).click(function(){
-              im = this;
-              $.ajax({
-                type: "POST",
-                url: "api/check_easy",
-                data:  JSON.stringify({
-                  "unidic_id": $(im).attr("unidic_id"),
-                  "surface": $(im).text()
-                }),
-                contentType: 'application/JSON',
-                dataType : 'JSON',
-                scriptCharset: 'utf-8',
-
-                success: function(res){
-                  $(im).removeClass("btn-default");
-                  $(im).removeClass("btn-primary");
-                  if (res == "none"){
-                    $(im).addClass("btn-default");
-                  } else{
-                    $(im).addClass("btn-primary");
-                  }
-                  display_number_of_easy_japanese_in_database();
-                },
-
-                error: function(xhr, status, err) {
-                  console.log("error");
-                  console.log(status);
-                  console.log(err);
-                }
-              });
-            });
           }
           display_number_of_easy_japanese_in_database();
         },

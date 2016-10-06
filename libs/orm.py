@@ -4,8 +4,13 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import MetaData, create_engine, orm
 from sqlalchemy import CHAR, VARCHAR, Integer, Column, PrimaryKeyConstraint, ForeignKey
+import configparser
 
-sql_DATABASE = 'mysql+pymysql://gakkai:gakkai@localhost/web_data?unix_socket=/mysql/mysql.sock&charset=utf8'
+config = configparser.ConfigParser()
+config.sections()
+config.read('./config.ini')
+
+sql_DATABASE = config.get('settings', "mysql")
 sql_metadata = MetaData()
 sql_engine = create_engine(
     sql_DATABASE,
@@ -23,12 +28,15 @@ sql_Base = declarative_base()
 sql_Base.query = db_session.query_property()
 
 class EasyUniDic(sql_Base):
+    """
+    """
     __tablename__ = 'easy_unidic'
 
     unidic_id = Column('unidic_id', VARCHAR(length=5), primary_key=True)
     surface = Column('surface', VARCHAR(length=50))
 
-# merge
-# commit
-
-#
+class EasyUniDicView(sql_Base):
+    __tablename__ = 'easy_unidic_view'
+    unidic_id = Column('unidic_id', VARCHAR(length=5), primary_key=True)
+    surface = Column('surface', VARCHAR(length=50))
+    POS = Column('POS')

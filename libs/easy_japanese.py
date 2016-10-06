@@ -2,9 +2,11 @@
 
 import MeCab
 from orm import *
-TAGGER_DIR = "/Users/takahashi/work/mecab_systemdic"
+
 
 class EasyJapanese(object):
+    """
+    """
     def __init__(self, tagger_dir=""):
         self.tagger = MecabTagger(tagger_dir)
 
@@ -41,8 +43,18 @@ class EasyJapanese(object):
             db_session.commit()
             return "none"
 
+    def get_number_of_easy_morph(self):
+        """
+        """
+        return db_session.query(EasyUniDic).count()
+
+    def get_register_words(self):
+        return db_session.query(EasyUniDicView).order_by(EasyUniDicView.POS).all()
+
 class MecabTagger(object):
     def __init__(self, tagger_dir=""):
+        if tagger_dir != "":
+            tagger_dir = "-d " + tagger_dir
         self.tagger = MeCab.Tagger(tagger_dir)
         self.tagger.parse("おまじない")
 
