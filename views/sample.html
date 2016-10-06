@@ -1,19 +1,10 @@
 % rebase('base.html', title='やさしい日本語ツール１')
 <script src="static/js/analyze.js"></script>
 <div class="container theme-showcase" role="main">
-  <!-- Main jumbotron for a primary marketing message or call to action -->
-  <!-- <div class="jumbotron">
-    <h1>やさしい日本語単語追加システム</h1>
-    <p>入力された文に含まれる単語が、やさしい日本語かどうかの情報を加えます。</p>
-  </div> -->
-
   <!-- Demo section -->
-  % include('contents/demo.html')
+  % include('contents/demo.html', h1='やさしい日本語を登録する')
 
   <!-- Detail of a tool -->
   % include('contents/detail.html')
-
-  <!-- Citation of a tool -->
-  <!-- % include('contents/citation.html') -->
 
 </div> <!-- /container -->

@@ -22,6 +22,10 @@ def index():
     """
     return template("sample")
 
+@route('/checker')
+def page_checker():
+    return template("checker")
+
 @get('/api/tokenize')
 def tokenize():
     """
