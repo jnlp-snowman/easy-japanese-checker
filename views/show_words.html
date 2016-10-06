@@ -1,0 +1,28 @@
+% rebase('base.html', title='やさしい日本語ツール１')
+<script src="static/js/common.js"></script>
+<div class="container theme-showcase" role="main">
+  <div class="page-header">
+    <h1>登録語一覧</h1>
+  </div>
+
+  <table class="table">
+    <thead>
+		    <tr>
+			       <th>品詞</th>
+			       <th>語数</th>
+			       <th>語</th>
+		    </tr>
+	  </thead>
+    <tbody>
+      % for pos, words in sorted(word_dic.items(), key=lambda x:len(x[1])):
+      <tr>
+        <td>{{pos}}</td>
+        <td>{{len(words)}}</td>
+        <td>
+          {{",".join([word.surface for word in words])}}
+        </td>
+      </tr>
+      % end
+    </tbody>
+  </table>
+</div> <!-- /container -->

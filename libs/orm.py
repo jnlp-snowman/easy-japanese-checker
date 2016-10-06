@@ -34,3 +34,9 @@ class EasyUniDic(sql_Base):
 
     unidic_id = Column('unidic_id', VARCHAR(length=5), primary_key=True)
     surface = Column('surface', VARCHAR(length=50))
+
+class EasyUniDicView(sql_Base):
+    __tablename__ = 'easy_unidic_view'
+    unidic_id = Column('unidic_id', VARCHAR(length=5), primary_key=True)
+    surface = Column('surface', VARCHAR(length=50))
+    POS = Column('POS')

@@ -48,6 +48,9 @@ class EasyJapanese(object):
         """
         return db_session.query(EasyUniDic).count()
 
+    def get_register_words(self):
+        return db_session.query(EasyUniDicView).order_by(EasyUniDicView.POS).all()
+
 class MecabTagger(object):
     def __init__(self, tagger_dir=""):
         if tagger_dir != "":
