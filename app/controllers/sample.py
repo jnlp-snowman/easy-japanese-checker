@@ -53,3 +53,12 @@ def check_easy():
     r = HTTPResponse(status=200, body=body)
     r.set_header('Content-Type', 'application/json')
     return r
+
+@get('/api/easy_morph_count')
+def get_number_of_easy_morph():
+    """
+    """
+    body = json.dumps(easy_japanese.get_number_of_easy_morph())
+    r = HTTPResponse(status=200, body=body)
+    r.set_header('Content-Type', 'application/json')
+    return r

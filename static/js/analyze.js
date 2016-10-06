@@ -69,6 +69,7 @@ function hoge(elm){
                   } else{
                     $(im).addClass("btn-primary");
                   }
+                  display_number_of_easy_japanese_in_database();
                 },
 
                 error: function(xhr, status, err) {
@@ -79,6 +80,7 @@ function hoge(elm){
               });
             });
           }
+          display_number_of_easy_japanese_in_database();
         },
 
         error: function(xhr, status, err) {

@@ -43,6 +43,11 @@ class EasyJapanese(object):
             db_session.commit()
             return "none"
 
+    def get_number_of_easy_morph(self):
+        """
+        """
+        return db_session.query(EasyUniDic).count()
+
 class MecabTagger(object):
     def __init__(self, tagger_dir=""):
         if tagger_dir != "":

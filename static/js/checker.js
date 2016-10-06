@@ -46,6 +46,7 @@ function hoge(elm){
               '<button type="button" class="btn ' + btn_type + '" unidic_id="' + unidic_id + '" morph_type="' + morph_type + '" id="' + id_morph + '">' + morpheme[0] +'</button>'
             ).appendTo("#textarea div");
           }
+          display_number_of_easy_japanese_in_database();
         },
 
         error: function(xhr, status, err) {
