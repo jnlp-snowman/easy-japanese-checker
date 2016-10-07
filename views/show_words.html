@@ -1,5 +1,5 @@
 % rebase('base.html', title='やさしい日本語ツール１')
-<script src="static/js/common.js"></script>
+<!-- <script src="static/js/common.js"></script> -->
 <div class="container theme-showcase" role="main">
   <div class="page-header">
     <h1>登録語一覧</h1>
@@ -19,7 +19,7 @@
         <td>{{pos}}</td>
         <td>{{len(words)}}</td>
         <td>
-          {{",".join([word.surface for word in words])}}
+          {{",".join([word.lemma for word in words])}}
         </td>
       </tr>
       % end

@@ -36,7 +36,12 @@ def page_checker():
 def show_words_from_db():
     from collections import defaultdict
 
-    easy_unidic_view_words=easy_japanese.get_register_words()
+    try:
+        easy_unidic_view_words=easy_japanese.get_register_words()
+    except Exception as e:
+        logging.debug(type(e))
+        logging.debug(e.args)
+        return "データベースエラー"
 
     word_dic = defaultdict(list)
     for word in easy_unidic_view_words:
@@ -52,7 +57,10 @@ def tokenize():
     GETリクエストで送られてきた単語を分割し、返す
     """
     text = request.query.input_text
-    result = easy_japanese.parse2web_register(text)
+    if text == "":
+        result = ""
+    else:
+        result = easy_japanese.parse2web_register(text)
 
     body = json.dumps(result)
     r = HTTPResponse(status=200, body=body)
@@ -78,7 +86,8 @@ def check_easy():
 def get_number_of_easy_morph():
     """
     """
-    body = json.dumps(easy_japanese.get_number_of_easy_morph())
+    number = easy_japanese.get_number_of_easy_morph()
+    body = json.dumps(number)
     r = HTTPResponse(status=200, body=body)
     r.set_header('Content-Type', 'application/json')
     return r
