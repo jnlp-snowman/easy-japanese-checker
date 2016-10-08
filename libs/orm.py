@@ -4,6 +4,9 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import MetaData, create_engine, orm
 from sqlalchemy import CHAR, VARCHAR, Integer, Column, PrimaryKeyConstraint, ForeignKey
+from sqlalchemy import exc
+from sqlalchemy import event
+from sqlalchemy.pool import Pool
 import configparser
 
 config = configparser.ConfigParser()
@@ -26,6 +29,21 @@ db_session = orm.scoped_session(
 
 sql_Base = declarative_base()
 sql_Base.query = db_session.query_property()
+
+@event.listens_for(Pool, "checkout")
+def ping_connection(dbapi_connection, connection_record, connection_proxy):
+    cursor = dbapi_connection.cursor()
+    try:
+        cursor.execute("SELECT 1")
+    except:
+        # optional - dispose the whole pool
+        # instead of invalidating one at a time
+        # connection_proxy._pool.dispose()
+
+        # raise DisconnectionError - pool will try
+        # connecting again up to three times before raising.
+        raise exc.DisconnectionError()
+    cursor.close()
 
 class EasyUniDic(sql_Base):
     """
