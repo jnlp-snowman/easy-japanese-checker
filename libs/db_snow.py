@@ -22,8 +22,8 @@ sql_engine = create_engine(
 )
 
 db_session = orm.scoped_session(
-    orm.sessionmaker(autocommit=False,
-                    autoflush=False,
+    orm.sessionmaker(autocommit=True,
+                    autoflush=True,
                     bind=sql_engine)
 )
 
