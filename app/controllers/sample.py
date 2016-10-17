@@ -44,6 +44,10 @@ def show_words_from_db():
         return "データベースエラー"
 
     word_dic = defaultdict(list)
+
+    if easy_unidic_view_words is None:
+        return template("show_words", word_dic=word_dic)
+
     for word in easy_unidic_view_words:
         if word.POS == None:
             word.POS = "未知語"

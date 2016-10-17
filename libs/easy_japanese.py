@@ -27,7 +27,14 @@ class EasyJapanese(object):
         """
         やさしい日本語かどうかを付与
         """
-        row = db_session.query(EasyUniDic).filter(EasyUniDic.unidic_id == unidic_id).one_or_none()
+        morph_id = db_snow.db_session.query(db_snow.CharMorph.CharId).filter(db_snow.CharMorph.UniDicId == unidic_id).one_or_none()
+
+        if morph_id is None:
+            return "unk"
+        else:
+            morph_id = morph_id[0]
+
+        row = db_session.query(EasyMorph).filter(EasyMorph.id == morph_id).one_or_none()
 
         if row is None:
             return "none"
@@ -38,32 +45,37 @@ class EasyJapanese(object):
         """
         やさしい日本語かそうでないかのチェックを切り替える
         """
-        morph = EasyUniDic()
-        morph.unidic_id = unidic_id
-        morph.surface = surface
+        if unidic_id.startswith("zz"):
+            return "unk"
+
+        morph = EasyMorph()
+        morph.id = db_snow.db_session.query(db_snow.CharMorph.CharId).filter(db_snow.CharMorph.UniDicId == unidic_id).one()[0]
+        morph.org2_kanji = db_snow.db_session.query(db_snow.UniDic.org2_kanji).filter(db_snow.UniDic.ID == unidic_id).one()[0]
+
         # 対象の語がデータベースに存在すれば、その行が戻り値となる。ない場合はNone
-        row = db_session.query(EasyUniDic).filter(EasyUniDic.unidic_id == unidic_id).one_or_none()
+        row = db_session.query(EasyMorph).filter(EasyMorph.id == morph.id).one_or_none()
 
         if row is None:
             db_session.merge(morph)
-            # db_session.flush()
-            # db_session.commit()
             return "easy"
         else:
             db_session.delete(row)
-            # db_session.flush()
-            # db_session.commit()
             return "none"
 
     def get_number_of_easy_morph(self):
         """
         """
-        return db_session.query(EasyUniDic).count()
+        return db_session.query(EasyMorph).count()
 
     def get_register_words(self):
-        unidic_ids = db_session.query(EasyUniDic.unidic_id).all()
+        morph_ids = db_session.query(EasyMorph.id).all()
+        morph_ids = [morph_id[0] for morph_id in morph_ids]
+
+        unidic_ids = db_snow.db_session.query(db_snow.UniDic.ID).join(db_snow.CharMorph, db_snow.UniDic.ID==db_snow.CharMorph.UniDicId).filter(db_snow.CharMorph.CharId.in_(morph_ids)).all()
         unidic_ids = [unidic_id[0] for unidic_id in unidic_ids]
-        return db_snow.db_session.query(db_snow.UniDic).filter(db_snow.UniDic.ID.in_(unidic_ids)).order_by(db_snow.UniDic.POS).all()
+
+        return db_snow.db_session.query(db_snow.UniDic).filter(db_snow.UniDic.ID.in_(unidic_ids)).group_by(db_snow.UniDic.org2_kanji).order_by(db_snow.UniDic.POS).all()
+
 
 class MecabTagger(object):
     def __init__(self, tagger_dir=""):

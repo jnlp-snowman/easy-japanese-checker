@@ -45,6 +45,57 @@ def ping_connection(dbapi_connection, connection_record, connection_proxy):
         raise exc.DisconnectionError()
     cursor.close()
 
+class Word(sql_Base):
+    __tablename__ = 'Word'
+    __table_args__ = (
+        PrimaryKeyConstraint('Id'),
+    )
+
+    Id = Column('Id', CHAR(length=5))
+    SnowmanPOS = Column('SnowmanPOS', VARCHAR(length=40))
+    POS = Column('POS', VARCHAR(length=20))
+    POS_s1 = Column('POS_s1', VARCHAR(length=20))
+    POS_s2 = Column('POS_s2', VARCHAR(length=20))
+    lemma = Column('lemma', VARCHAR(length=120))
+    org_lemma = Column('org_lemma', VARCHAR(length=120))
+    freq = Column('BCCWJ_freq', Integer)
+
+    def __repr__(self):
+        return 'word:{}'.format(self.lemma)
+
+class Morph(sql_Base):
+    __tablename__ = 'Morph'
+    __table_args__ = (
+        PrimaryKeyConstraint('CharId'),
+    )
+
+    CharId = Column('CharId', CHAR(length=5))
+    lemma = Column('lemma', VARCHAR(length=120))
+    Id = Column('Id', CHAR(length=5), ForeignKey('Word.Id'))
+
+    CharMorph = orm.relationship("CharMorph")
+    Word = orm.relationship("Word", backref=orm.backref('Morph'))
+
+    def __repr__(self):
+        return 'morph:{}'.format(self.lemma)
+
+class CharMorph(sql_Base):
+    __tablename__ = 'CharMorph'
+    __table_args__ = (
+        PrimaryKeyConstraint('UniDicId'),
+    )
+
+    UniDicId = Column('UniDicId', CHAR(length=5), ForeignKey('UniDic.ID'))
+    CharId = Column('CharId', CHAR(length=5), ForeignKey('Morph.CharId'))
+    ambiguity = Column('ambiguity', Integer)
+    freq = Column('freq', Integer)
+
+    UniDic = orm.relationship("UniDic", backref=orm.backref('CharMorph'), order_by=UniDicId)
+    Morph = orm.relationship("Morph", backref=orm.backref('Morph'))
+    # Morph = orm.relationship("Morph", back_populates="Morph")
+    def __repr__(self):
+        return 'CharMorph:{}'.format(self.CharId)
+
 class UniDic(sql_Base):
     __tablename__ = 'UniDic'
     __table_args__ = (
@@ -64,3 +115,7 @@ class UniDic(sql_Base):
     reading = Column('reading', VARCHAR(length=40))
     org2_kanji = Column('org2_kanji', VARCHAR(length=40))
     org2_kana = Column('org2_kana', VARCHAR(length=40))
+    freq = Column('freq', Integer)
+
+    def __repr__(self):
+        return 'UniDic:{}'.format(self.lemma)

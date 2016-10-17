@@ -38,6 +38,8 @@ function hoge(elm){
             btn_type = "btn-default";
             if (morph_type == "easy"){
               btn_type = "btn-primary";
+            } else if (morph_type == "unk") {
+              btn_type = "btn-warning";
             }
             // ボタンのID
             id_morph = "morph_" + index;
