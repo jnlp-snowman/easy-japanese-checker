@@ -61,6 +61,48 @@ class EasyMorph(sql_Base):
     id = Column('ID', VARCHAR(length=5), primary_key=True)
     org2_kanji = Column('org2_kanji', VARCHAR(length=40))
 
+class EasyMorph2(sql_Base):
+    """
+    """
+    __tablename__ = 'easy_morph2'
+
+    id = Column('ID', VARCHAR(length=5), primary_key=True)
+    org2_kanji = Column('org2_kanji', VARCHAR(length=40))
+
+
+class User(sql_Base):
+    """
+    """
+    __tablename__ = 'user'
+
+    id = Column('id', Integer, primary_key=True)
+    name = Column('name', VARCHAR(length=20))
+
+class TanakaJ(sql_Base):
+    """
+    """
+    __tablename__ = 'tanaka_j'
+
+    id = Column('id', Integer, primary_key=True)
+    sentence = Column('sentence', VARCHAR(length=100))
+
+class TanakaE(sql_Base):
+    """
+    """
+    __tablename__ = 'tanaka_e'
+
+    id = Column('id', Integer, primary_key=True)
+    sentence = Column('sentence', VARCHAR(length=100))
+
+class EditJ(sql_Base):
+    """
+    """
+    __tablename__ = 'edit_j'
+
+    id = Column('id', Integer, primary_key=True)
+    user_id = Column('user_id', Integer, ForeignKey('user.id'))
+    sentence_id = Column('sentence_id', Integer, ForeignKey('tanaka_j.id'))
+    sentence = Column('sentence', VARCHAR(length=120))
 
 # class EasyUniDicView(sql_Base):
 #     __tablename__ = 'easy_unidic_view'
