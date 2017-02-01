@@ -53,6 +53,14 @@ def show_words_from_db():
     for word in easy_unidic_view_words:
         if word.POS == None:
             word.POS = "未知語"
+
+        # 名詞の分類
+        if word.POS == "名詞":
+            if word.POS_s1 == "普通名詞" and word.POS_s2 == "サ変可能":
+                word.POS = "サ変名詞"
+            elif word.POS_s1 == "普通名詞" and (word.POS_s2 == "形状詞可能" or word.POS_s2 == "サ変形状詞可能"):
+                word.POS = "形状詞"
+
         word_dic[word.POS].append(word)
 
     return template("show_words", word_dic=word_dic)
@@ -129,6 +137,14 @@ def show_words_from_db():
     for word in easy_unidic_view_words:
         if word.POS == None:
             word.POS = "未知語"
+
+        # 名詞の分類
+        if word.POS == "名詞":
+            if word.POS_s1 == "普通名詞" and word.POS_s2 == "サ変可能":
+                word.POS = "サ変名詞"
+            elif word.POS_s1 == "普通名詞" and (word.POS_s2 == "形状詞可能" or word.POS_s2 == "サ変形状詞可能"):
+                word.POS = "形状詞"
+
         word_dic[word.POS].append(word)
 
     return template("show_words", word_dic=word_dic)
