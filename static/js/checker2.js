@@ -24,7 +24,7 @@ function hoge(elm){
 
         success: function(result){
           // テキストエリアを初期化
-          $("#textarea div").html("");
+          $("#result").html("");
           text = "";
 
           for(var index in result){
@@ -46,7 +46,7 @@ function hoge(elm){
             // ボタン生成
             morph = $(
               '<button type="button" class="btn ' + btn_type + '" unidic_id="' + unidic_id + '" morph_type="' + morph_type + '" id="' + id_morph + '">' + morpheme[0] +'</button>'
-            ).appendTo("#textarea div");
+            ).appendTo("#result");
           }
           display_number_of_easy_japanese_in_database();
         },

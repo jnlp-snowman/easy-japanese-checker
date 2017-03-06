@@ -1,9 +1,20 @@
 <div class="page-header">
   <h1>{{h1 or 'No h1'}}</h1>
 </div>
+
+<p><a class="btn btn-info btn-sm" href="http://www.jnlp.org/SNOW/S13" role="button">もっと詳しく</a></p>
+
 <!-- This form is sent by javascript. -->
 <div id="textarea">
-  <input type="text" class="form-control" id="input_sentence" placeholder="ここに文を入力">
+  <textarea rows="3"class="form-control" id="input_sentence" placeholder="ここに文を入力"></textarea>
   <br>
   <div></div>
 </div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">結果</div>
+  <div class="panel-body">
+    <div id="result"></div>
+  </div>
+</div>
+
