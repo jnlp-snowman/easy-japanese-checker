@@ -1,0 +1,17 @@
+<div class="page-header">
+  <h1>{{h1 or 'No h1'}}</h1>
+</div>
+
+<select class="selectpicker">
+% for user in users:
+  <option user_id={{user.id}}>{{user.name}}</option>
+% end
+</select>
+
+<input type="number" id="sentence_id" name="sentence_id" min="1" max="50000" step="1" value=1>
+<!-- This form is sent by javascript. -->
+<div id="textarea">
+  <input type="text" class="form-control" id="input_sentence" placeholder="ここに文を入力">
+  <br>
+  <div></div>
+</div>

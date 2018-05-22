@@ -1,0 +1,4 @@
+[settings]
+mecab_systemdic = /snowmans/c_snowman/resources/mecab_systemdic/
+mysql = mysql+pymysql://{{mysql_user_info}}/web_data?charset=utf8
+db_snow = mysql+pymysql://{{mysql_user_info}}/snowman?charset=utf8
