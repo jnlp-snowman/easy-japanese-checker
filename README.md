@@ -13,8 +13,8 @@
 
 ```sh
 git clone https://github.com/jnlp-snowman/easy-japanese-checker.git
-cd web-nlp-interface
-gunicorn -b 127.0.0.1:8080 -w 1 index:app
+pip install -r requirements.txt
+gunicorn -b 127.0.0.1:8000 -w 1 index:app
 ```
 
 apacheで動かすときに、Proxyを使って転送しています。
