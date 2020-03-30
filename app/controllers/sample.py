@@ -24,10 +24,8 @@ logging.debug(TAGGER_DIR)
 def index():
     """
     やさしい日本語チェッカーにリダイレクト。
-    easy-japaneseをつけないと、うまくルーティングできない。
-    「http://160.16.58.116/easy-japanese/」 -> 「http://160.16.58.116/」にアクセスしてしまう。。
     """
-    redirect("/easy-japanese/checker")
+    redirect("/checker")
 
 ## User2用
 # tokenize_2
