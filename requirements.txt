@@ -1,4 +1,4 @@
-bottle==0.12.13
+bottle==0.12.20
 gunicorn==19.6.0
 mecab-python3==0.7
 PyMySQL==0.8.1
